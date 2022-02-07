@@ -23,7 +23,7 @@ public class Tappable : MonoBehaviour
         startPos = gameObject.transform.position;
     }
 
-    void NewClick()
+    public void NewClick()
     {
         GameState.instance.clicks++;
         GameState.instance.hud.Q<Label>("clicks-label").text = "" + GameState.instance.clicks;
