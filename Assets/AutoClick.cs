@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimedClick : MonoBehaviour
+public class AutoClick : MonoBehaviour
 {
+    public float time = 0;
+    public float totalTime = 1f;
+
     public Tappable button;
     public GameObject pointer;
-    public float timer;
-    public float time;
-    public float offset = 0;
+
+    public float minY = 0.5f;
     public float maxY = 1.5f;
-    public float minY = 1.3f;
 
     // Start is called before the first frame update
     void Start()
@@ -23,22 +24,16 @@ public class TimedClick : MonoBehaviour
     {
         time += Time.deltaTime;
 
-        var t = ((time / timer) + offset) % 1;
+        var t = ((time + 0.5f * totalTime) % totalTime) / totalTime;
 
-        t = Mathf.InverseLerp(0.3f, 1f, t);
-
-        t = Mathf.Sin(Mathf.PI * t);
-
-        t = t * t * t;
+        t = Mathf.Sin(t * Mathf.PI);
 
         pointer.transform.localPosition = Vector3.Lerp(new Vector3(0, maxY, 0), new Vector3(0, minY, 0), t);
 
-        Debug.Log(t);
-
-        if (time >= timer)
+        if (time >= totalTime)
         {
             button.NewClick();
-            time = (time - timer);
+            time = 0;
         }
     }
 }
